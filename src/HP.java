@@ -8,6 +8,9 @@ public class HP {
     }
 
     public HP(int currentHP, int maxHP) {
+        if (currentHP > maxHP)
+            currentHP = maxHP;
+
         this.currentHP = currentHP;
         this.maxHP = maxHP;
     }

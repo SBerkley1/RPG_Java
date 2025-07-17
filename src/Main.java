@@ -7,17 +7,26 @@ public class Main {
         Player player = new Player(typeChoice(), name());
 
         player.print();
-        
 
         player.gainXP(300);
         System.out.println("----");
         player.print();
         System.out.println("----");
-        // trying to add item to inventory and print inventory but only get memory address.
-        Inventory itemHeal = new Inventory("Heal", "Heals for 4 hp", 3, 4);
-        player.inventory.add(itemHeal);
+
+        Inventory manaRestore = new Inventory("Mana restore", "Recovers 1 spell splot", 1, 1);
+        Inventory smallHealPotion = new Inventory("Small Heal Potion", "Heals for 4 hp", 3, 4);
+        player.addItem(smallHealPotion);
 
         player.takeDamage(5);
+        player.print();
+
+        System.out.println("----");
+        player.addItem(smallHealPotion);
+        player.takeDamage(13);
+        player.print();
+
+        System.out.println("---");
+        player.addItem(manaRestore);
         player.print();
     }
 
