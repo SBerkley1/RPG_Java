@@ -36,7 +36,7 @@ public class Inventory {
         this.increaseFromItem = increaseFromItem;
     }
 
-    public void printInventory() {
-        System.out.println(itemName + ", " + itemDescription + ", Quanity: " + quanity);
+    public String toString() {
+        return this.itemName + ": \"" + this.itemDescription + "\"\t Quanity: " + this.quanity;
     }
 }

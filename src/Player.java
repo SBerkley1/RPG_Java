@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Player {
     private StatBlock stats;
     private LevelSystem levelSystem;
     private HP hp;
-    // having issues with arraylist
+
     public ArrayList<Inventory> inventory = new ArrayList<>();
 
     // premade statblock for class types
@@ -97,5 +98,25 @@ public class Player {
         hp.printHP();
         stats.printStats();
         printInventory();
+    }
+
+    private int counter = 0;
+    // can't do static variables in java for some reason. so declared it outside the function. wtf
+    public void addItem(Inventory item) {
+        if (counter == 0) {
+            inventory.add(item);
+            ++counter;
+        }
+        else {
+            for (int i = 0; i < inventory.size(); ++i) {
+                if (item.getItemName().equals(inventory.get(i).getItemName())) ;
+                {
+                    // inventory.add(item.setQuanity();)   // if item already in arraylist, increase by item.getQuanity
+                    System.out.println("Will add " + item.getQuanity() + " to inventoryQuanity");
+                    break;
+                }
+            }
+            inventory.add(item);
+        }
     }
 }
