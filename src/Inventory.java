@@ -14,6 +14,14 @@ public class Inventory {
         this.increaseFromItem = increaseFromItem;
     }
 
+    // copy constructor
+    public Inventory(Inventory other) {
+        this.itemName = other.itemName;
+        this.itemDescription = other.itemDescription;
+        this.quanity = other.quanity;
+        this.increaseFromItem = other.increaseFromItem;
+    }
+
     // get/set
     public String getItemName() { return itemName; }
     public String getItemDescription() { return itemDescription; }

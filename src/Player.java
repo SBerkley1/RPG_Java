@@ -91,32 +91,39 @@ public class Player {
     }
 
     public void print() {
-        System.out.println("Class: " + type);
-        System.out.println("Name: " + name);
-        System.out.println("Level: " + levelSystem.getLevel());
-        levelSystem.printLvl();
-        hp.printHP();
-        stats.printStats();
+        //System.out.println("Class: " + type);
+        //System.out.println("Name: " + name);
+        //System.out.println("Level: " + levelSystem.getLevel());
+        //levelSystem.printLvl();
+        //hp.printHP();
+        //stats.printStats();
         printInventory();
     }
 
-    private int counter = 0;
-    // can't do static variables in java for some reason. so declared it outside the function. wtf
     public void addItem(Inventory item) {
-        if (counter == 0) {
-            inventory.add(item);
-            ++counter;
+        boolean itemExists = false;
+
+        if (inventory.isEmpty()) {
+            // just here for first item added to inventory
+            inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getQuanity(),
+                    item.getIncreaseFromItem()));
         }
         else {
             for (int i = 0; i < inventory.size(); ++i) {
-                if (item.getItemName().equals(inventory.get(i).getItemName())) ;
+                if (item.getItemName().equals(inventory.get(i).getItemName()))
                 {
-                    // inventory.add(item.setQuanity();)   // if item already in arraylist, increase by item.getQuanity
-                    System.out.println("Will add " + item.getQuanity() + " to inventoryQuanity");
+                    int updateQuantity = inventory.get(i).getQuanity() + item.getQuanity();
+                    // if already in inventory, increase quantity
+                    inventory.get(i).setQuanity(updateQuantity);
+
+                    itemExists = true;  // there was a match in our inventory
                     break;
                 }
             }
-            inventory.add(item);
+            // if not in Inventory, add item
+            if (!itemExists)
+                inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getQuanity()
+                             , item.getIncreaseFromItem()));
         }
     }
 }
