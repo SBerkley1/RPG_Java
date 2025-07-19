@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
-        Player player = new Player(typeChoice(), name());
+        Scanner scnr = new Scanner(System.in);
+        Player player = new Player(typeChoice(scnr), name(scnr));
 
         player.print();
 
@@ -37,10 +37,11 @@ public class Main {
         player.addItem(manaRestore);
         player.print();
 
+        scnr.close();
+
     }
 
-    public static Player.Type typeChoice() {
-        Scanner scnr = new Scanner(System.in);  // will need to pass in scnr
+    public static Player.Type typeChoice(Scanner scnr) {
         System.out.print("What class do you want? (e.g., Wizard, Barbarian, Rogue, Hunter): ");
         String typeChoice;
         typeChoice = scnr.nextLine();
@@ -60,8 +61,7 @@ public class Main {
         }
     }
 
-    public static String name() {
-        Scanner scnr = new Scanner(System.in); // will need to pass in scnr
+    public static String name(Scanner scnr) {
         System.out.print("What is your name?: ");
         String name;
         name = scnr.nextLine();

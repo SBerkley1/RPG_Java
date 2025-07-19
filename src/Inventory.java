@@ -3,29 +3,21 @@ import java.util.List;
 public class Inventory {
     private String itemName;
     private String itemDescription;
-    private int quanity;
+    private int itemQuantity;
     private int increaseFromItem;
 
 
     public Inventory(String itemName, String itemDescription, int quanity, int increaseFromItem) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
-        this.quanity = quanity;
+        this.itemQuantity = quanity;
         this.increaseFromItem = increaseFromItem;
-    }
-
-    // copy constructor
-    public Inventory(Inventory other) {
-        this.itemName = other.itemName;
-        this.itemDescription = other.itemDescription;
-        this.quanity = other.quanity;
-        this.increaseFromItem = other.increaseFromItem;
     }
 
     // get/set
     public String getItemName() { return itemName; }
     public String getItemDescription() { return itemDescription; }
-    public int getQuanity() { return quanity; }
+    public int getItemQuantity() { return itemQuantity; }
     public int getIncreaseFromItem() { return increaseFromItem; }
 
     public void setItemName(String itemName) {
@@ -36,8 +28,8 @@ public class Inventory {
         this.itemDescription = itemDescription;
     }
 
-    public void setQuanity(int quanity) {
-        this.quanity = quanity;
+    public void setQuanity(int quantity) {
+        this.itemQuantity = quantity;
     }
 
     public void setIncreaseFromItem(int increaseFromItem) {
@@ -45,6 +37,6 @@ public class Inventory {
     }
 
     public String toString() {
-        return this.itemName + ": \"" + this.itemDescription + "\"\t Quanity: " + this.quanity;
+        return this.itemName + ": \"" + this.itemDescription + "\"\t Quantity: " + this.itemQuantity;
     }
 }

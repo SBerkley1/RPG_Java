@@ -1,7 +1,4 @@
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Player {
     public enum Type {
@@ -91,12 +88,12 @@ public class Player {
     }
 
     public void print() {
-        //System.out.println("Class: " + type);
-        //System.out.println("Name: " + name);
-        //System.out.println("Level: " + levelSystem.getLevel());
-        //levelSystem.printLvl();
-        //hp.printHP();
-        //stats.printStats();
+        System.out.println("Class: " + type);
+        System.out.println("Name: " + name);
+        System.out.println("Level: " + levelSystem.getLevel());
+        levelSystem.printLvl();
+        hp.printHP();
+        stats.printStats();
         printInventory();
     }
 
@@ -105,14 +102,14 @@ public class Player {
 
         if (inventory.isEmpty()) {
             // just here for first item added to inventory
-            inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getQuanity(),
+            inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getItemQuantity(),
                     item.getIncreaseFromItem()));
         }
         else {
             for (int i = 0; i < inventory.size(); ++i) {
                 if (item.getItemName().equals(inventory.get(i).getItemName()))
                 {
-                    int updateQuantity = inventory.get(i).getQuanity() + item.getQuanity();
+                    int updateQuantity = inventory.get(i).getItemQuantity() + item.getItemQuantity();
                     // if already in inventory, increase quantity
                     inventory.get(i).setQuanity(updateQuantity);
 
@@ -122,8 +119,8 @@ public class Player {
             }
             // if not in Inventory, add item
             if (!itemExists)
-                inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getQuanity()
-                             , item.getIncreaseFromItem()));
+                inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getItemQuantity()
+                        , item.getIncreaseFromItem()));
         }
     }
 }
