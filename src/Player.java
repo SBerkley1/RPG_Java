@@ -87,15 +87,7 @@ public class Player {
         }
     }
 
-    public void print() {
-        System.out.println("Class: " + type);
-        System.out.println("Name: " + name);
-        System.out.println("Level: " + levelSystem.getLevel());
-        levelSystem.printLvl();
-        hp.printHP();
-        stats.printStats();
-        printInventory();
-    }
+
 
     public void addItem(Inventory item) {
         boolean itemExists = false;
@@ -111,7 +103,7 @@ public class Player {
                 {
                     int updateQuantity = inventory.get(i).getItemQuantity() + item.getItemQuantity();
                     // if already in inventory, increase quantity
-                    inventory.get(i).setQuanity(updateQuantity);
+                    inventory.get(i).setQuantity(updateQuantity);
 
                     itemExists = true;  // there was a match in our inventory
                     break;
@@ -122,5 +114,39 @@ public class Player {
                 inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getItemQuantity()
                         , item.getIncreaseFromItem()));
         }
+    }
+
+    public void useItem(Inventory item) {
+    /* use item from inventory. Removes item from inventory when quantity is 0 */
+        for (int i = 0; i < inventory.size(); ++i) {
+            if (item.getItemName().equals(inventory.get(i).getItemName()))
+            {
+                int updateQuantity = inventory.get(i).getItemQuantity() - 1;
+
+                if (updateQuantity < 1) {
+                    // remove from inventory if Quantity = 0
+                    inventory.remove(i);
+                    break;
+                }
+                else {
+                    // decreases quantity by one
+                    inventory.get(i).setQuantity(updateQuantity);
+                }
+                break;
+            }
+            else {
+                System.out.println("You don't have a " + item.getItemName() + " in your inventory");
+            }
+        }
+    }
+
+    public void print() {
+        System.out.println("Class: " + type);
+        System.out.println("Name: " + name);
+        System.out.println("Level: " + levelSystem.getLevel());
+        levelSystem.printLvl();
+        hp.printHP();
+        stats.printStats();
+        printInventory();
     }
 }
