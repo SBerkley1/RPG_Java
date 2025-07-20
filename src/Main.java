@@ -13,7 +13,7 @@ public class Main {
         player.print();
         System.out.println("----");
 
-        Inventory manaRestore = new Inventory("Mana restore", "Recovers 1 spell slot", 1, 1);
+        Inventory manaRestore = new Inventory("Mana Restore", "Recovers 1 spell slot", 1, 1);
         Inventory smallHealPotion = new Inventory("Small Heal Potion", "Heals for 4 hp", 3, 4);
         player.addItem(smallHealPotion);
 
@@ -25,17 +25,6 @@ public class Main {
         player.takeDamage(13);
         player.print();
 
-        System.out.println("---");
-        player.addItem(manaRestore);
-        player.print();
-        System.out.println("----");
-        player.addItem(smallHealPotion);
-        player.addItem(manaRestore);
-        player.print();
-        System.out.println("----");
-        player.addItem(smallHealPotion);
-        player.addItem(manaRestore);
-        player.print();
 
         scnr.close();
 

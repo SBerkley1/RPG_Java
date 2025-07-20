@@ -1,16 +1,14 @@
-import java.util.List;
-
 public class Inventory {
     private String itemName;
     private String itemDescription;
     private int itemQuantity;
     private int increaseFromItem;
 
-
-    public Inventory(String itemName, String itemDescription, int quanity, int increaseFromItem) {
+    // constructor
+    public Inventory(String itemName, String itemDescription, int itemQuantity, int increaseFromItem) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
-        this.itemQuantity = quanity;
+        this.itemQuantity = itemQuantity;
         this.increaseFromItem = increaseFromItem;
     }
 
@@ -23,19 +21,17 @@ public class Inventory {
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
-
     public void setItemDescription(String itemDescription) {
         this.itemDescription = itemDescription;
     }
-
-    public void setQuanity(int quantity) {
+    public void setQuantity(int quantity) {
         this.itemQuantity = quantity;
     }
-
     public void setIncreaseFromItem(int increaseFromItem) {
         this.increaseFromItem = increaseFromItem;
     }
 
+    // output
     public String toString() {
         return this.itemName + ": \"" + this.itemDescription + "\"\t Quantity: " + this.itemQuantity;
     }
