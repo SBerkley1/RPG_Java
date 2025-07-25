@@ -1,28 +1,28 @@
 public class Inventory {
+    public enum ItemType {
+        heal, buff, debuff, restore
+    }
     private String itemName;
-    private String itemDescription;
+    private ItemType itemType;
     private int itemQuantity;
     private int increaseFromItem;
 
     // constructor
-    public Inventory(String itemName, String itemDescription, int itemQuantity, int increaseFromItem) {
+    public Inventory(String itemName, ItemType itemType, int itemQuantity, int increaseFromItem) {
         this.itemName = itemName;
-        this.itemDescription = itemDescription;
+        this.itemType = itemType;
         this.itemQuantity = itemQuantity;
         this.increaseFromItem = increaseFromItem;
     }
 
     // get/set
     public String getItemName() { return itemName; }
-    public String getItemDescription() { return itemDescription; }
+    public ItemType getItemType() { return itemType; }
     public int getItemQuantity() { return itemQuantity; }
     public int getIncreaseFromItem() { return increaseFromItem; }
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
-    }
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
     }
     public void setQuantity(int quantity) {
         this.itemQuantity = quantity;
@@ -32,7 +32,8 @@ public class Inventory {
     }
 
     // output
+    @Override
     public String toString() {
-        return this.itemName + ": \"" + this.itemDescription + "\"\t Quantity: " + this.itemQuantity;
+        return this.itemName + ": " + "\t Quantity: " + this.itemQuantity;
     }
 }
