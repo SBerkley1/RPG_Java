@@ -25,6 +25,10 @@ public class HP {
         this.currentHP = this.maxHP;
     }
 
+    public void setCurrentHP(int hpIncreas) {
+        this.currentHP = hpIncreas;
+    }
+
     //public void receiveDamage(Ability damage)         coming later
 
     public void receiveDamage(int damage) {
@@ -43,7 +47,7 @@ public class HP {
     }
 
     public void heal(int healAmount) {
-        if(healAmount + currentHP > maxHP)
+        if (healAmount + currentHP > maxHP)
             currentHP = maxHP;
         else
             currentHP += healAmount;

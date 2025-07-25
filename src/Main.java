@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -8,22 +9,69 @@ public class Main {
 
         player.print();
 
-        player.gainXP(300);
+        player.gainXP(50);
         System.out.println("----");
         player.print();
         System.out.println("----");
 
-        Inventory manaRestore = new Inventory("Mana Restore", "Recovers 1 spell slot", 1, 1);
-        Inventory smallHealPotion = new Inventory("Small Heal Potion", "Heals for 4 hp", 3, 4);
+        Inventory manaRestore = new Inventory("Mana Restore", Inventory.ItemType.restore,  1, 1);
+        Inventory smallHealPotion = new Inventory("Small Heal Potion", Inventory.ItemType.heal, 3, 4);
+
+        HashMap<String, Ability> abilities = new HashMap<>();
+        Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12);
+        Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24);
+
+
+
+        if (fireball.getIsAbilityUnlock()) {
+            abilities.put(fireball.getAbilityName(), fireball);
+        }
+        if (lvl2Spell.getIsAbilityUnlock()) {
+            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
+        }
+
+        System.out.println(abilities);
         player.addItem(smallHealPotion);
 
+        player.takeDamage(fireball.getAbilityEffect());
+        player.print();
+
+        System.out.println("----");
+        player.gainXP(0);
+
+        if (lvl2Spell.getIsAbilityUnlock()) {
+            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
+        }
+
+        player.useItem(smallHealPotion);
+        player.print();
+        player.useItem(smallHealPotion);
+        player.print();
+        System.out.println("----");
+        player.useItem(smallHealPotion);
+        player.print();
+
+
+
+        System.out.println("----");
+        System.out.println(abilities);
         player.takeDamage(5);
+        player.useItem(smallHealPotion);
+
+        player.print();
+        System.out.println("----");
+        player.gainXP(100);
+        if (fireball.getIsAbilityUnlock()) {
+            abilities.put(fireball.getAbilityName(), fireball);
+        }
+        if (lvl2Spell.getIsAbilityUnlock()) {
+            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
+        }
+
+        System.out.println(abilities);
         player.print();
 
-        System.out.println("----");
-        player.addItem(smallHealPotion);
-        player.takeDamage(13);
-        player.print();
+
 
 
         scnr.close();
@@ -57,4 +105,5 @@ public class Main {
 
         return name;
     }
+
 }

@@ -68,7 +68,7 @@ public class Player {
     public void takeDamage(int damage) {
         hp.receiveDamage(damage);
     }
-
+    public int getLevel() { return this.levelSystem.getLevel(); }
 
 
     public void gainXP(int amountXP) {
@@ -87,14 +87,12 @@ public class Player {
         }
     }
 
-
-
     public void addItem(Inventory item) {
         boolean itemExists = false;
 
         if (inventory.isEmpty()) {
             // just here for first item added to inventory
-            inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getItemQuantity(),
+            inventory.add(new Inventory(item.getItemName(), item.getItemType(), item.getItemQuantity(),
                     item.getIncreaseFromItem()));
         }
         else {
@@ -111,32 +109,37 @@ public class Player {
             }
             // if not in Inventory, add item
             if (!itemExists)
-                inventory.add(new Inventory(item.getItemName(), item.getItemDescription(), item.getItemQuantity()
+                inventory.add(new Inventory(item.getItemName(), item.getItemType(), item.getItemQuantity()
                         , item.getIncreaseFromItem()));
         }
     }
 
     public void useItem(Inventory item) {
     /* use item from inventory. Removes item from inventory when quantity is 0 */
+        boolean itemFound = false;
+
         for (int i = 0; i < inventory.size(); ++i) {
-            if (item.getItemName().equals(inventory.get(i).getItemName()))
-            {
+            if (item.getItemName().equals(inventory.get(i).getItemName())) {
+                itemFound = true;   // there's a match in our inventory
+                switch (inventory.get(i).getItemType()) { // need to figure out type of item and how to use it properly
+                    case heal:
+                        hp.heal(item.getIncreaseFromItem());
+                }
                 int updateQuantity = inventory.get(i).getItemQuantity() - 1;
 
                 if (updateQuantity < 1) {
-                    // remove from inventory if Quantity = 0
+                    // remove from inventory if Quantity is 0
                     inventory.remove(i);
                     break;
-                }
-                else {
+                } else {
                     // decreases quantity by one
                     inventory.get(i).setQuantity(updateQuantity);
                 }
                 break;
             }
-            else {
-                System.out.println("You don't have a " + item.getItemName() + " in your inventory");
-            }
+        }
+        if (!itemFound) {
+            System.out.println("You don't have a " + item.getItemName() + " in your inventory");
         }
     }
 
@@ -146,7 +149,8 @@ public class Player {
         System.out.println("Level: " + levelSystem.getLevel());
         levelSystem.printLvl();
         hp.printHP();
-        stats.printStats();
+        //stats.printStats();
         printInventory();
+
     }
 }
