@@ -25,8 +25,8 @@ public class HP {
         this.currentHP = this.maxHP;
     }
 
-    public void setCurrentHP(int hpIncreas) {
-        this.currentHP = hpIncreas;
+    public void setCurrentHP(int hpIncrease) {
+        this.currentHP = hpIncrease;
     }
 
     //public void receiveDamage(Ability damage)         coming later

@@ -18,8 +18,8 @@ public class Main {
         Inventory smallHealPotion = new Inventory("Small Heal Potion", Inventory.ItemType.heal, 3, 4);
 
         HashMap<String, Ability> abilities = new HashMap<>();
-        Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12);
-        Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24);
+        Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12, 1);
+        Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24, 1);
 
 
 
@@ -32,6 +32,7 @@ public class Main {
 
         System.out.println(abilities);
         player.addItem(smallHealPotion);
+        player.addItem(manaRestore);
 
         player.takeDamage(fireball.getAbilityEffect());
         player.print();
@@ -71,8 +72,28 @@ public class Main {
         System.out.println(abilities);
         player.print();
 
+        player.printManaSlots();
+        player.takeDamage(player.useAbility(fireball));
+        player.print();
+        player.printManaSlots();
 
+        player.printManaSlots();
+        player.takeDamage(player.useAbility(fireball));
+        player.print();
+        player.printManaSlots();
 
+        player.printManaSlots();
+        player.takeDamage(player.useAbility(fireball));
+        player.print();
+        player.printManaSlots();
+
+        player.printManaSlots();
+        player.takeDamage(player.useAbility(fireball));
+        player.print();
+        player.printManaSlots();
+
+        player.useItem(manaRestore);
+        player.printManaSlots();
 
         scnr.close();
 

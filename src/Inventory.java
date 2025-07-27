@@ -1,6 +1,6 @@
 public class Inventory {
     public enum ItemType {
-        heal, buff, debuff, restore
+        heal, buff, debuff, mana
     }
     private String itemName;
     private ItemType itemType;

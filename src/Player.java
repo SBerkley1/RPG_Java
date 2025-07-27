@@ -24,13 +24,13 @@ public class Player {
     private StatBlock stats(Type type) {
         switch (type) {
             case Wizard:
-                return new StatBlock(8, 16, 12, 10, 12, 14);
+                return new StatBlock(8, 16, 12, 10, 12, 14, 4);
             case Barbarian:
-                return new StatBlock(16, 8, 10, 14, 12, 12);
+                return new StatBlock(16, 8, 10, 14, 12, 12, 1);
             case Rogue:
-                return new StatBlock(10, 10, 14, 12, 12, 14);
+                return new StatBlock(10, 10, 14, 12, 12, 14, 2);
             case Hunter:
-                return new StatBlock(12, 12, 16, 10, 8, 8);
+                return new StatBlock(12, 12, 16, 10, 8, 8, 3);
             default:
                 return null;
         }
@@ -81,12 +81,6 @@ public class Player {
         // figure out stats increase at certain lvls
     }
 
-    public void printInventory() {
-        for (Inventory item : inventory) {
-            System.out.println(item);
-        }
-    }
-
     public void addItem(Inventory item) {
         boolean itemExists = false;
 
@@ -124,6 +118,12 @@ public class Player {
                 switch (inventory.get(i).getItemType()) { // need to figure out type of item and how to use it properly
                     case heal:
                         hp.heal(item.getIncreaseFromItem());
+                        break;
+                    case mana:
+                        stats.restore(item.getIncreaseFromItem());
+                        break;
+                    default:
+                        throw new RuntimeException("That item type is not in the game");
                 }
                 int updateQuantity = inventory.get(i).getItemQuantity() - 1;
 
@@ -143,6 +143,24 @@ public class Player {
         }
     }
 
+    private boolean isEnoughMana() {
+        return stats.getManaSlots() > 0;
+    }
+
+    public int useAbility(Ability ability) {
+        if (isEnoughMana()) {
+            int cost = stats.getManaSlots() - ability.getManaCost();
+
+            stats.setManaSlots(cost);
+
+            return ability.getAbilityEffect();
+        }
+        else
+            System.out.println("You don't have any mana!");
+
+            return 0;
+    }
+
     public void print() {
         System.out.println("Class: " + type);
         System.out.println("Name: " + name);
@@ -152,5 +170,21 @@ public class Player {
         //stats.printStats();
         printInventory();
 
+    }
+
+    public void printInventory() {
+        for (Inventory item : inventory) {
+            System.out.println(item);
+        }
+    }
+
+    public void printManaSlots() {
+        System.out.print("[Mana Slots: ");
+
+        char character = 'o';
+        for (int i=1; i <= stats.getManaSlots(); ++i)
+            System.out.print(character + " ");
+
+        System.out.println("]");
     }
 }
