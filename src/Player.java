@@ -17,6 +17,7 @@ public class Player {
     private StatBlock stats;
     private LevelSystem levelSystem;
     private HP hp;
+    private Mana mana;
 
     public ArrayList<Inventory> inventory = new ArrayList<>();
 
@@ -24,13 +25,13 @@ public class Player {
     private StatBlock stats(Type type) {
         switch (type) {
             case Wizard:
-                return new StatBlock(8, 16, 12, 10, 12, 14, 4);
+                return new StatBlock(8, 16, 12, 10, 12, 14);
             case Barbarian:
-                return new StatBlock(16, 8, 10, 14, 12, 12, 1);
+                return new StatBlock(16, 8, 10, 14, 12, 12);
             case Rogue:
-                return new StatBlock(10, 10, 14, 12, 12, 14, 2);
+                return new StatBlock(10, 10, 14, 12, 12, 14);
             case Hunter:
-                return new StatBlock(12, 12, 16, 10, 8, 8, 3);
+                return new StatBlock(12, 12, 16, 10, 8, 8);
             default:
                 return null;
         }
@@ -43,6 +44,17 @@ public class Player {
 
         return increaseHP + conMod;
     }
+
+    private int playerMana(Type type) {
+        int wizardClassMana = 4;
+        int defaultClassMana = 2;
+
+        return switch (type) {      // enhanced switch test out
+            case Wizard -> wizardClassMana;
+            case Barbarian, Rogue, Hunter -> defaultClassMana;
+        };
+    }
+
 // Public:
     public Player(Type type, String name) {
         /* create premade characters stats depending on Type */
@@ -51,6 +63,7 @@ public class Player {
         this.stats = stats(type);
         this.levelSystem = new LevelSystem();
         this.hp = new HP(10, 10);
+        this.mana = new Mana(playerMana(type));
     }
 
     public void setType(Type type) {
@@ -120,7 +133,7 @@ public class Player {
                         hp.heal(item.getIncreaseFromItem());
                         break;
                     case mana:
-                        stats.restore(item.getIncreaseFromItem());
+                        mana.restoreMana(item.getIncreaseFromItem());
                         break;
                     default:
                         throw new RuntimeException("That item type is not in the game");
@@ -143,22 +156,22 @@ public class Player {
         }
     }
 
-    private boolean isEnoughMana() {
-        return stats.getManaSlots() > 0;
-    }
+    private boolean isEnoughMana(Ability ability) {
+        return mana.getCurrentMana() > ability.getManaCost();
+    } // returns true if mana is greater than 0
 
     public int useAbility(Ability ability) {
-        if (isEnoughMana()) {
-            int cost = stats.getManaSlots() - ability.getManaCost();
+        if (isEnoughMana(ability)) {
+            int cost = mana.getCurrentMana() - ability.getManaCost();
 
-            stats.setManaSlots(cost);
+            mana.setCurrentMana(cost);
 
             return ability.getAbilityEffect();
         }
         else
             System.out.println("You don't have any mana!");
 
-            return 0;
+        return 0;
     }
 
     public void print() {
@@ -182,7 +195,7 @@ public class Player {
         System.out.print("[Mana Slots: ");
 
         char character = 'o';
-        for (int i=1; i <= stats.getManaSlots(); ++i)
+        for (int i=1; i <= mana.getCurrentMana(); ++i)
             System.out.print(character + " ");
 
         System.out.println("]");

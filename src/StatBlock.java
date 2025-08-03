@@ -6,10 +6,8 @@ public class StatBlock {
     private int wisdom;
     private int charisma;
 
-    private int manaSlots;
-
     public StatBlock(int strength, int intelligence, int dexterity
-                    , int constitution, int wisdom, int charisma, int manaSlots) {
+                    , int constitution, int wisdom, int charisma) {
 
         this.strength = strength;
         this.intelligence = intelligence;
@@ -17,7 +15,6 @@ public class StatBlock {
         this.constitution = constitution;
         this.wisdom = wisdom;
         this.charisma = charisma;
-        this.manaSlots = manaSlots;
     }
 
     // standard getters
@@ -27,12 +24,6 @@ public class StatBlock {
     public int getConstitution() { return constitution; }
     public int getWisdom() { return wisdom; }
     public int getCharisma() { return charisma; }
-    public int getManaSlots() { return manaSlots;}
-
-    public void restore(int restoreAmount) {
-        // need to check that restore doesn't go hight then max mana slots for lvl
-        manaSlots += restoreAmount;
-    }
 
     // setters
     public void setStrength(int strength) { this.strength = strength; }
@@ -41,7 +32,6 @@ public class StatBlock {
     public void setConstitution(int constitution) { this.constitution = constitution; }
     public void setWisdom(int wisdom) { this.wisdom = wisdom; }
     public void setCharisma(int charisma) {this.charisma = charisma; }
-    public void setManaSlots(int manaSlots) { this.manaSlots = manaSlots; }
 
     // modifiers
     public int getStrModifier() { return (strength - 10) / 2; }
@@ -59,12 +49,6 @@ public class StatBlock {
         System.out.println("CON: " + constitution + " (" + getConModifier() + ")");
         System.out.println("WIS: " + wisdom + " (" + getWisModifier() + ")");
         System.out.println("CHA: " + charisma + " (" + getChaModifier() + ")");
-    }
-
-    public void printManaSlots() {
-        char character = 'o';
-        for (int i=1; i <= this.manaSlots; ++i)
-            System.out.println(character + " ");
     }
 
 }
