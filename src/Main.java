@@ -1,98 +1,58 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
+    private static List<Inventory> inventory = new ArrayList<>();
+    private static Map<String, Ability> abilities = new HashMap<>();
+
     public static void main(String[] args) {
         Scanner scnr = new Scanner(System.in);
         Player player = new Player(typeChoice(scnr), name(scnr));
 
-        player.print();
-
-        player.gainXP(50);
-        System.out.println("----");
-        player.print();
-        System.out.println("----");
-
-        Inventory manaRestore = new Inventory("Mana Restore", Inventory.ItemType.restore,  1, 1);
+        Inventory manaRestore = new Inventory("Mana Restore", Inventory.ItemType.mana,  1, 1);
         Inventory smallHealPotion = new Inventory("Small Heal Potion", Inventory.ItemType.heal, 3, 4);
-
-        HashMap<String, Ability> abilities = new HashMap<>();
         Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12, 1);
         Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24, 1);
 
+        putAbility(player, abilities);
+        player.printManaSlots();
+
+        System.out.println();
+        System.out.println("You just used fireball and it costed 1 mana");
+        player.useAbility(fireball);
+        player.printManaSlots();
+
+        System.out.println();
+        System.out.println("You just used fireball and it costed 1 mana");
+        player.useAbility(fireball);
+        player.printManaSlots();
 
 
-        if (fireball.getIsAbilityUnlock()) {
-            abilities.put(fireball.getAbilityName(), fireball);
-        }
-        if (lvl2Spell.getIsAbilityUnlock()) {
-            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
-        }
-
-        System.out.println(abilities);
-        player.addItem(smallHealPotion);
+        player.addItem(manaRestore);
+        player.addItem(manaRestore);
+        player.addItem(manaRestore);
         player.addItem(manaRestore);
 
-        player.takeDamage(fireball.getAbilityEffect());
-        player.print();
-
-        System.out.println("----");
-        player.gainXP(0);
-
-        if (lvl2Spell.getIsAbilityUnlock()) {
-            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
-        }
-
-        player.useItem(smallHealPotion);
-        player.print();
-        player.useItem(smallHealPotion);
-        player.print();
-        System.out.println("----");
-        player.useItem(smallHealPotion);
-        player.print();
-
-
-
-        System.out.println("----");
-        System.out.println(abilities);
-        player.takeDamage(5);
-        player.useItem(smallHealPotion);
-
-        player.print();
-        System.out.println("----");
-        player.gainXP(100);
-        if (fireball.getIsAbilityUnlock()) {
-            abilities.put(fireball.getAbilityName(), fireball);
-        }
-        if (lvl2Spell.getIsAbilityUnlock()) {
-            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
-        }
-
-        System.out.println(abilities);
-        player.print();
-
-        player.printManaSlots();
-        player.takeDamage(player.useAbility(fireball));
-        player.print();
+        System.out.println();
+        System.out.println("You just received 4 Mana Restores.");
+        player.printInventory();
         player.printManaSlots();
 
-        player.printManaSlots();
-        player.takeDamage(player.useAbility(fireball));
-        player.print();
-        player.printManaSlots();
-
-        player.printManaSlots();
-        player.takeDamage(player.useAbility(fireball));
-        player.print();
-        player.printManaSlots();
-
-        player.printManaSlots();
-        player.takeDamage(player.useAbility(fireball));
-        player.print();
-        player.printManaSlots();
-
+        System.out.println();
+        System.out.println("You just used a Mana Restore");
         player.useItem(manaRestore);
+        player.printInventory();
+        player.printManaSlots();
+
+        System.out.println();
+        System.out.println("You just used a Mana Restore");
+        player.useItem(manaRestore);
+        player.printInventory();
+        player.printManaSlots();
+
+        System.out.println();
+        System.out.println("You just used a Mana Restore");
+        player.useItem(manaRestore);
+        player.printInventory();
         player.printManaSlots();
 
         scnr.close();
@@ -127,4 +87,15 @@ public class Main {
         return name;
     }
 
+    public static void putAbility(Player player, Map<String, Ability> abilities) {
+        Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12, 1);
+        Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24, 1);
+
+        if (fireball.getIsAbilityUnlock()) {
+            abilities.put(fireball.getAbilityName(), fireball);
+        }
+        if (lvl2Spell.getIsAbilityUnlock()) {
+            abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
+        }
+    }
 }
