@@ -45,6 +45,13 @@ public class Player {
         return increaseHP + conMod;
     }
 
+    private int calculateManaIncrease() {
+        /* increase 1 every level for right now */
+        int increaseMana = 1;
+
+        return increaseMana;
+    }
+
     private int playerMana(Type type) {
         int wizardClassMana = 4;
         int defaultClassMana = 2;
@@ -89,7 +96,9 @@ public class Player {
         int levelsGained = levelSystem.gainXP(amountXP);
         for(int i=0; i < levelsGained; ++i) {
             int lvlHP = calculateHPIncrease();
+            int lvlMana = calculateManaIncrease();
             hp.setMaxHP(lvlHP);
+            mana.setMaxMana(lvlMana);
         }
         // figure out stats increase at certain lvls
     }
@@ -133,12 +142,23 @@ public class Player {
                         hp.heal(item.getIncreaseFromItem());
                         break;
                     case mana:
-                        mana.restoreMana(item.getIncreaseFromItem());
-                        break;
-                    default:
-                        throw new RuntimeException("That item type is not in the game");
+                        if (mana.getCurrentMana() >= mana.getMaxMana()) {
+                            System.out.println("Your mana is full. You can't use " + item.getItemName());
+                            continue;
+                        }
+                        else {
+                                mana.restoreMana(item.getIncreaseFromItem());
+                                break;
+                        }
+                        default:
+                            throw new RuntimeException("That item type is not in the game");
                 }
-                int updateQuantity = inventory.get(i).getItemQuantity() - 1;
+                
+                int updateQuantity = 1;
+                if (mana.getCurrentMana() > mana.getMaxMana())
+                    mana.setCurrentMana(mana.getMaxMana());
+                else
+                    updateQuantity = inventory.get(i).getItemQuantity() - 1;
 
                 if (updateQuantity < 1) {
                     // remove from inventory if Quantity is 0
@@ -157,7 +177,7 @@ public class Player {
     }
 
     private boolean isEnoughMana(Ability ability) {
-        return mana.getCurrentMana() > ability.getManaCost();
+        return mana.getCurrentMana() >= ability.getManaCost();
     } // returns true if mana is greater than 0
 
     public int useAbility(Ability ability) {
@@ -195,9 +215,12 @@ public class Player {
         System.out.print("[Mana Slots: ");
 
         char character = 'o';
-        for (int i=1; i <= mana.getCurrentMana(); ++i)
-            System.out.print(character + " ");
+        for (int i=0; i < mana.getCurrentMana(); ++i) {
+                System.out.print(character + " "); // mana slots
+        }
 
+        for (int i = mana.getCurrentMana(); i <= 0; ++i)
+            System.out.print(" "); // empty
         System.out.println("]");
     }
 }

@@ -3,8 +3,8 @@ public class Mana {
     private int maxMana;
 
     public Mana() {
-        this.currentMana = 1;
-        this.maxMana = 1;
+        this.currentMana = 0;
+        this.maxMana = 0;
     }
 
     public Mana(int newPlayerMana) {
