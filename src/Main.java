@@ -16,15 +16,24 @@ public class Main {
         putAbility(player, abilities);
         player.printManaSlots();
 
-        System.out.println();
-        System.out.println("You just used fireball and it costed 1 mana");
-        player.useAbility(fireball);
-        player.printManaSlots();
 
         System.out.println();
         System.out.println("You just used fireball and it costed 1 mana");
         player.useAbility(fireball);
         player.printManaSlots();
+        player.gainXP(0);
+
+        System.out.println();
+        System.out.println("You just used fireball and it costed 1 mana");
+        player.useAbility(fireball);
+        player.printManaSlots();
+        player.gainXP(0);
+
+        System.out.println();
+        System.out.println("You just used fireball and it costed 1 mana");
+        player.useAbility(fireball);
+        player.printManaSlots();
+        player.gainXP(0);
 
 
         player.addItem(manaRestore);
@@ -36,6 +45,7 @@ public class Main {
         System.out.println("You just received 4 Mana Restores.");
         player.printInventory();
         player.printManaSlots();
+        player.gainXP(0);
 
         System.out.println();
         System.out.println("You just used a Mana Restore");
