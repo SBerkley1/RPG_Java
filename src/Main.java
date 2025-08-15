@@ -12,7 +12,7 @@ public class Main {
         // will be getting stats from 5e(2014) Monster Manual
         Monster goblin = new Monster("Goblin", 7, 5, 50);
 
-        goblin.print();
+        combatSystem(player, goblin);
 
 
 
@@ -72,4 +72,35 @@ public class Main {
             abilities.put(lvl2Spell.getAbilityName(), lvl2Spell);
         }
     }
+
+
+    // Combat System ----------------------------------------------------
+
+    public static void combatMenu() {
+        // Options available during combat
+        System.out.println("What would you like to do?");
+        System.out.println("\t1. Attack");
+        System.out.println("\t2. Use Ability");
+        System.out.println("\t3. Use Item from Inventory");
+        System.out.println("\t4. Check Inventory");
+        System.out.println("\t5. Check your stats");
+        System.out.println("\t6. Check Monster's stats");
+    }
+
+    public static void visual_stat_block(Player player, Monster npc) {
+        System.out.print("[" + player.getName() + ": HP " + player.getCurrentHP() + "/" + player.getMaxHP() + "]");
+        player.printManaSlots();
+    }
+
+    public static void combatSystem(Player player, Monster npc) {
+        combatMenu();   // list combat options
+
+        while (player.isAlive()) {
+            visual_stat_block(player, npc);
+            player.takeDamage(npc.getDamage());
+
+        }
+    }
+
+
 }
