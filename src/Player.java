@@ -78,12 +78,18 @@ public class Player {
         this.stats = stats(type);
     }
 
+    public boolean isAlive() {
+        return hp.isAlive();
+    }
+
     public Type getType() {
         return type;
     }
     public String getName() {
         return name;
     }
+    public int getCurrentHP() { return hp.getCurrentHP(); }
+    public int getMaxHP() { return  hp.getMaxHP(); }
 
     public void takeDamage(int damage) {
         hp.receiveDamage(damage);
