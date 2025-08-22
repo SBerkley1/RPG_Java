@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class Main {
-    private static List<Inventory> inventory = new ArrayList<>();
     private static Map<String, Ability> abilities = new HashMap<>();
 
     public static void main(String[] args) {
@@ -9,15 +8,24 @@ public class Main {
 
         Player player = new Player(typeChoice(scnr), name(scnr));
 
-        // will be getting stats from 5e(2014) Monster Manual
-        Monster goblin = new Monster("Goblin", 7, 5, 50);
-
-        combatSystem(player, goblin);
-
-
-
         Inventory manaRestore = new Inventory("Mana Restore", Inventory.ItemType.mana,  1, 1);
         Inventory smallHealPotion = new Inventory("Small Heal Potion", Inventory.ItemType.heal, 3, 4);
+        player.addItem(smallHealPotion);
+
+
+        // will be getting stats from 5e(2014) Monster Manual
+        Monster goblin = new Monster("Goblin", 7, 5, 50);
+        Monster duergar = new Monster("Duergar", 26, 6, 200);
+        Monster flameskull = new Monster("FlameSkull", 40, 10, 1100);
+
+        combatSystem(player, goblin, scnr);
+        combatSystem(player, duergar, scnr);
+        combatSystem(player, flameskull, scnr);
+
+
+
+
+
         Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12, 1);
         Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24, 1);
 
@@ -61,7 +69,7 @@ public class Main {
         return name;
     }
 
-    public static void putAbility(Player player, Map<String, Ability> abilities) {
+    public static void putAbility(Player player) {
         Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12, 1);
         Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24, 1);
 
@@ -85,20 +93,125 @@ public class Main {
         System.out.println("\t4. Check Inventory");
         System.out.println("\t5. Check your stats");
         System.out.println("\t6. Check Monster's stats");
+        System.out.println();
     }
 
-    public static void visual_stat_block(Player player, Monster npc) {
+    public static void visualStatBlock(Player player, Monster npc) {
         System.out.print("[" + player.getName() + ": HP " + player.getCurrentHP() + "/" + player.getMaxHP() + "]");
-        player.printManaSlots();
+        System.out.print("\t");player.printManaSlots();
+
+        System.out.println("<" + npc.getName() + ": HP " + npc.getCurrentHP() + "/" + npc.getMaxHP() + ">");
+        System.out.println();
     }
 
-    public static void combatSystem(Player player, Monster npc) {
+    public static void endOfBattle(Player player, Monster npc) {
+        if (!npc.isAlive()) {
+            System.out.println(player.getName() + " has killed the " + npc.getName() + "!");
+            player.gainXP(npc.getGivenXP());
+        }
+
+        if (!player.isAlive()) {
+            System.out.println(player.getName() + " has died. I'm sorry adventurer!");
+        }
+    }
+
+    public static void choseItem(Player player, Scanner scnr) {
+        // displays Inventory, asks if player wants to use an item, Player needs to type in the key name correctly to use it
+        // I know my UI sucks for this, but I'm in early stages
+        player.printInventory();
+        System.out.println();
+
+
+        System.out.print("Would you like to use an item? (y/n): ");
+        String userAnswer;
+        userAnswer = scnr.nextLine().trim();
+
+        if (!userAnswer.equals("y")) {
+            return;
+        }
+
+        System.out.print("Which item would you like to use?: ");
+        String userChoise;
+        userChoise = scnr.nextLine();
+
+        Inventory chosenItem = null;
+        for (Inventory item : player.getInventory()) {
+            if (item.getItemName().equalsIgnoreCase(userChoise)) {
+                chosenItem = item;
+                break;
+            }
+        }
+        if (chosenItem != null) {
+            player.useItem(chosenItem);
+        }
+
+    }
+
+    public static Ability choseAbility(Player player) {
+        Ability fireball = new Ability(player, "fireball", Ability.AbilityType.attack, 1, 12, 1);
+        Ability lvl2Spell = new Ability(player, "lvl2spell", Ability.AbilityType.attack, 2, 24, 1);
+
+        // don't know how I'm going to implement this yet.
+        System.out.println(fireball);
+
+        return fireball;
+
+    }
+
+    public static void combatSystem(Player player, Monster npc, Scanner scnr) {
+
         combatMenu();   // list combat options
 
-        while (player.isAlive()) {
-            visual_stat_block(player, npc);
-            player.takeDamage(npc.getDamage());
+        while (player.isAlive() && npc.isAlive()) {
+            visualStatBlock(player, npc);
 
+            System.out.print(">");
+            int userInput;
+            userInput = scnr.nextInt();
+            scnr.nextLine();
+
+            switch (userInput) {
+                case 1: {  // base attack
+                    System.out.println("You attacked the " + npc.getName() + " and did " + player.getBaseDamage() + " damage!");
+                    npc.takeDamage(player.getBaseDamage());
+                    if (npc.isAlive()) {
+                        System.out.println("The " + npc.getName() + " attacked you and did " + npc.getDamage() + " damage!");
+                        player.takeDamage(npc.getDamage());
+                    }
+                    break;
+                }
+                case 2: { // use ability
+                    npc.takeDamage(player.useAbility(choseAbility(player)));
+                    if (npc.isAlive()) {    // by my thinking, if mana is at 0 and player tried to use Ability Monster will still hit
+                        // FIXME: I can tell there is an error here because no check for 'not enough mana'
+                        System.out.println("The " + npc.getName() + " attacked you and did " + npc.getDamage() + " damage!");
+                        player.takeDamage(npc.getDamage());
+                    }
+                    break;
+                }
+                case 3: { // use item
+                    choseItem(player, scnr);
+                    break;
+                }
+                case 4: { // check inventory
+                    // FIXME: actually I think I can remove this because use item will show inventory
+                    player.printInventory();
+                    break;
+                }
+                case 5: {   // check player stats
+                    player.print();
+                    break;
+                }
+                case 6: {   // check monster's stats
+                    npc.print();
+                    break;
+                }
+                default:
+                    System.out.println("Invalid input!");
+            }
+
+            System.out.println();
+            endOfBattle(player, npc);
         }
     }
 

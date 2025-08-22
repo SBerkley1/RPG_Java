@@ -19,19 +19,20 @@ public class Player {
     private HP hp;
     private Mana mana;
 
+
     public ArrayList<Inventory> inventory = new ArrayList<>();
 
     // premade statblock for class types
     private StatBlock stats(Type type) {
         switch (type) {
             case Wizard:
-                return new StatBlock(8, 16, 12, 10, 12, 14);
+                return new StatBlock(8, 16, 12, 10, 12, 14, 2);
             case Barbarian:
-                return new StatBlock(16, 8, 10, 14, 12, 12);
+                return new StatBlock(16, 8, 10, 14, 12, 12, 4);
             case Rogue:
-                return new StatBlock(10, 10, 14, 12, 12, 14);
+                return new StatBlock(10, 10, 14, 12, 12, 14, 3);
             case Hunter:
-                return new StatBlock(12, 12, 16, 10, 8, 8);
+                return new StatBlock(12, 12, 16, 10, 8, 8, 3);
             default:
                 return null;
         }
@@ -78,8 +79,16 @@ public class Player {
         this.stats = stats(type);
     }
 
+    public void setXP(int xp) {
+        levelSystem.gainXP(xp);
+    }
+
     public boolean isAlive() {
         return hp.isAlive();
+    }
+
+    public boolean isLvlUP() {
+        return levelSystem.isLvlUp();
     }
 
     public Type getType() {
@@ -90,6 +99,8 @@ public class Player {
     }
     public int getCurrentHP() { return hp.getCurrentHP(); }
     public int getMaxHP() { return  hp.getMaxHP(); }
+    public int getBaseDamage() { return stats.getBaseDamage(); }
+    public ArrayList<Inventory> getInventory() { return inventory; }
 
     public void takeDamage(int damage) {
         hp.receiveDamage(damage);
@@ -207,7 +218,7 @@ public class Player {
         levelSystem.printLvl();
         hp.printHP();
         //stats.printStats();
-        printInventory();
+
 
     }
 

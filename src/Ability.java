@@ -32,6 +32,7 @@ public class Ability {
 
     @Override
     public String toString() {
-        return this.abilityName + ": " + "\t" + "Effect: " + this.abilityEffect;
+        // this is only damage based ability. I need to figure something out
+        return "You used " + this.abilityName + " and did " + this.abilityEffect + " damage!";
     }
 }

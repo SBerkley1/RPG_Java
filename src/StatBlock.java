@@ -5,9 +5,10 @@ public class StatBlock {
     private int constitution;
     private int wisdom;
     private int charisma;
+    private int baseDamage;
 
     public StatBlock(int strength, int intelligence, int dexterity
-                    , int constitution, int wisdom, int charisma) {
+                    , int constitution, int wisdom, int charisma, int baseDamage) {
 
         this.strength = strength;
         this.intelligence = intelligence;
@@ -15,6 +16,7 @@ public class StatBlock {
         this.constitution = constitution;
         this.wisdom = wisdom;
         this.charisma = charisma;
+        this.baseDamage = baseDamage;
     }
 
     // standard getters
@@ -24,6 +26,7 @@ public class StatBlock {
     public int getConstitution() { return constitution; }
     public int getWisdom() { return wisdom; }
     public int getCharisma() { return charisma; }
+    public int getBaseDamage() { return baseDamage; }
 
     // setters
     public void setStrength(int strength) { this.strength = strength; }
@@ -32,6 +35,7 @@ public class StatBlock {
     public void setConstitution(int constitution) { this.constitution = constitution; }
     public void setWisdom(int wisdom) { this.wisdom = wisdom; }
     public void setCharisma(int charisma) {this.charisma = charisma; }
+    public void setBaseDamage(int baseDamage) { this.baseDamage = baseDamage; }
 
     // modifiers
     public int getStrModifier() { return (strength - 10) / 2; }

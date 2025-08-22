@@ -16,9 +16,18 @@ public class Monster {
 
     // Getters... still need StatBlock, Ability, and Mana
     public String getName() { return name; };
-    public int getHP() { return hp.getCurrentHP(); }
+    public int getCurrentHP() { return hp.getCurrentHP(); }
+    public int getMaxHP() { return  hp.getMaxHP(); }
     public int getDamage() { return damage; }
     public int getGivenXP() { return givenXP; }
+
+    public boolean isAlive() {
+        return hp.isAlive();
+    }
+
+    public void takeDamage(int damage) {
+        hp.receiveDamage(damage);
+    }
 
     // setters
     public void setName(String name) {
