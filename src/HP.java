@@ -47,10 +47,14 @@ public class HP {
     }
 
     public void heal(int healAmount) {
-        if (healAmount + currentHP > maxHP)
+        if (healAmount + currentHP > maxHP) {
             currentHP = maxHP;
-        else
+            System.out.println("You healed by " + (maxHP - healAmount) + "!");
+        }
+        else {
             currentHP += healAmount;
+            System.out.println("You healed by " + healAmount + "!");
+        }
     }
 
     public void printHP() {

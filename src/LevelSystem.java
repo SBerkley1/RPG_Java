@@ -15,6 +15,8 @@ public class LevelSystem {
         return lvlGained;
     }
 
+    public boolean isLvlUp() { return xp >= xpToNextLevel(); }
+
     public int xpToNextLevel() {
         return level * 100;     // generic right now. switch later
     }
