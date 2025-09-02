@@ -91,6 +91,7 @@ public class Player {
         return levelSystem.isLvlUp();
     }
 
+    // getters
     public Type getType() {
         return type;
     }
@@ -100,6 +101,7 @@ public class Player {
     public int getCurrentHP() { return hp.getCurrentHP(); }
     public int getMaxHP() { return  hp.getMaxHP(); }
     public int getBaseDamage() { return stats.getBaseDamage(); }
+    public int getManaSlots() { return mana.getCurrentMana(); }
     public ArrayList<Inventory> getInventory() { return inventory; }
 
     public void takeDamage(int damage) {
@@ -154,10 +156,16 @@ public class Player {
         for (int i = 0; i < inventory.size(); ++i) {
             if (item.getItemName().equals(inventory.get(i).getItemName())) {
                 itemFound = true;   // there's a match in our inventory
-                switch (inventory.get(i).getItemType()) { // need to figure out type of item and how to use it properly
+                switch (inventory.get(i).getItemType()) {
                     case heal:
-                        hp.heal(item.getIncreaseFromItem());
-                        break;
+                        if (hp.getCurrentHP() == hp.getMaxHP()) {
+                            System.out.println("You are already at max HP!");
+                            continue;
+                        }
+                        else {
+                            hp.heal(item.getIncreaseFromItem());
+                            break;
+                        }
                     case mana:
                         if (mana.getCurrentMana() >= mana.getMaxMana()) {
                             System.out.println("Your mana is full. You can't use " + item.getItemName());

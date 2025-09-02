@@ -11,7 +11,7 @@ public class Main {
         Inventory manaRestore = new Inventory("Mana Restore", Inventory.ItemType.mana,  1, 1);
         Inventory smallHealPotion = new Inventory("Small Heal Potion", Inventory.ItemType.heal, 3, 4);
         player.addItem(smallHealPotion);
-
+        player.addItem(manaRestore);
 
         // will be getting stats from 5e(2014) Monster Manual
         Monster goblin = new Monster("Goblin", 7, 5, 50);
@@ -121,6 +121,11 @@ public class Main {
         player.printInventory();
         System.out.println();
 
+        // need to add code to show a message if nothing in inventory.
+        if (player.inventory.isEmpty()) {
+            System.out.println("You're inventory is empty...");
+            return;
+        }
 
         System.out.print("Would you like to use an item? (y/n): ");
         String userAnswer;
@@ -141,9 +146,9 @@ public class Main {
                 break;
             }
         }
-        if (chosenItem != null) {
-            player.useItem(chosenItem);
-        }
+
+        player.useItem(chosenItem);  // when hp is full and you use heal potion, it still consumes a potion and displays that you were healed by 6, which should be 4
+
 
     }
 
@@ -158,9 +163,33 @@ public class Main {
 
     }
 
+    public static void baseAttack(Player player, Monster npc) {
+        System.out.println("You attacked the " + npc.getName() + " and did " + player.getBaseDamage() + " damage!");
+        npc.takeDamage(player.getBaseDamage());
+        if (npc.isAlive()) {
+            System.out.println("The " + npc.getName() + " attacked you and did " + npc.getDamage() + " damage!");
+            player.takeDamage(npc.getDamage());
+        }
+    }
+
+    public static void useAbility(Player player, Monster npc) {
+        if (player.getManaSlots() <= 0) {   // Player has no mana
+            System.out.println("You do not have enough Mana Slots. Pick another option or use a Mana Restore Potion!");
+            return;
+        }
+
+        npc.takeDamage(player.useAbility(choseAbility(player)));
+        if (npc.isAlive()) {
+            System.out.println("The " + npc.getName() + " attacked you and did " + npc.getDamage() + " damage!");
+            player.takeDamage(npc.getDamage());
+        }
+    }
+
     public static void combatSystem(Player player, Monster npc, Scanner scnr) {
 
-        combatMenu();   // list combat options
+        if (player.isAlive()) {
+            combatMenu();   // list combat options
+        }
 
         while (player.isAlive() && npc.isAlive()) {
             visualStatBlock(player, npc);
@@ -172,21 +201,11 @@ public class Main {
 
             switch (userInput) {
                 case 1: {  // base attack
-                    System.out.println("You attacked the " + npc.getName() + " and did " + player.getBaseDamage() + " damage!");
-                    npc.takeDamage(player.getBaseDamage());
-                    if (npc.isAlive()) {
-                        System.out.println("The " + npc.getName() + " attacked you and did " + npc.getDamage() + " damage!");
-                        player.takeDamage(npc.getDamage());
-                    }
+                    baseAttack(player, npc);
                     break;
                 }
                 case 2: { // use ability
-                    npc.takeDamage(player.useAbility(choseAbility(player)));
-                    if (npc.isAlive()) {    // by my thinking, if mana is at 0 and player tried to use Ability Monster will still hit
-                        // FIXME: I can tell there is an error here because no check for 'not enough mana'
-                        System.out.println("The " + npc.getName() + " attacked you and did " + npc.getDamage() + " damage!");
-                        player.takeDamage(npc.getDamage());
-                    }
+                    useAbility(player, npc);
                     break;
                 }
                 case 3: { // use item
@@ -214,6 +233,4 @@ public class Main {
             endOfBattle(player, npc);
         }
     }
-
-
 }
