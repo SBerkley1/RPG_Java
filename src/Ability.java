@@ -33,6 +33,9 @@ public class Ability {
     @Override
     public String toString() {
         // this is only damage based ability. I need to figure something out
-        return "You used " + this.abilityName + " and did " + this.abilityEffect + " damage!";
+        if (abilityType == AbilityType.attack)
+            return "You used " + this.abilityName + " and did " + this.abilityEffect + " damage!";
+        else
+            return "Ability not used!";
     }
 }
